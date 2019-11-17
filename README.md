@@ -1,4 +1,4 @@
-# Directory Generator
+#Directory Generator
 
 Generates multiple folders in current directory or specified path. 
 
