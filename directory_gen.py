@@ -19,7 +19,7 @@ def create_directory(path, new_dir_name):
     return "success"
 
 
-""" Description: if path is i.e "C:\....\", CMD turns the '"\' sequence into '"' 
+""" Description: if path is i.e "C:\\....\", CMD turns the '"\' sequence into '"' 
     Thus, argv includes the rest of the parameters as part of the path string, making argv length = 3
     Function will split the path string into desired parameters. """
 def splitargv(argv_inst):
@@ -43,9 +43,10 @@ def main():
 
     # if empty length, print instructions
     if (len(sys.argv) == 1):
-        print("\nUsage: python directory_gen.py -[flag] [\"<path>\"] \"<folder_name_1>\" \"<folder_name_2>\"...")
+        print("\nUsage: python directory_gen.py -[flag] [\"<path>\"] <folder_name_1> <folder_name_2>...")
         print("Flags:")
-        print("\t\"-p\" \"<path>\" \"<folder_name_1>\" \"<folder_name_2>\"... --> creates new directories in given path.")
+        print("\t\"-p\" \"<path>\" <folder_name_1> <folder_name_2>... --> creates new directories in given path.")
+        print("\t Note: For spaced new folder names, i.e \"Folder Name\", use quotations.")
         return
 
     # 3 execution cases
@@ -60,6 +61,8 @@ def main():
         sys.argv = sys.argv[:1] + sys.argv[2:]
 
         path = sys.argv[1]
+
+        first_dir_param = 2
         # Check local path 
         if(not check_path(path)):
             print("\nError: Cannot find the path, please input a valid path")
@@ -67,17 +70,19 @@ def main():
             return
     elif(sys.argv[1][0] == "-"): # Invalid flag used 
         print("\nError: Incorrect flag.")
-        print("Usage: python directory_gen.py -[flag] [\"<path\"] \"<folder_name_1>\" \"<folder_name_2>\"...")
+        print("Usage: python directory_gen.py -[flag] [\"<path\"] <folder_name_1> <folder_name_2>...")
         print("Flags:")
-        print("\t\"-p\" \"<path>\" \"<folder_name_1>\" \"<folder_name_2>\"... --> creates new directories in given path.")
+        print("\t\"-p\" \"<path>\" <folder_name_1> <folder_name_2>... --> creates new directories in given path.")
+        print("\t Note: For spaced new folder names, i.e \"Folder Name\", use quotations.")
         return 
     else: # Assume use of local path 
         path = os.getcwd()
+        first_dir_param = 1 
   
     print("Creating folders...")
 
     # Create passed folder_names  
-    for i in range(2, len(sys.argv)):
+    for i in range(first_dir_param, len(sys.argv)):
         result = create_directory(path, sys.argv[i])
         if(result == "success"):
             print(f"\nCreated directory \"{sys.argv[i]}\" successfully in \"{path}\".")  
